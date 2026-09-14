@@ -1,0 +1,44 @@
+name: Darken disabled deposit option
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/darken-disabled-deposit.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Style Deposit Funds as disabled
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('public/index.html')
+          s=p.read_text()
+
+          old_css='.choice.credit{background:rgba(255,255,255,.035)}'
+          new_css='.choice.credit{background:rgba(0,0,0,.2);border-color:rgba(255,255,255,.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.012);opacity:.76}.choice.credit .choice-icon{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.025);color:#77777d}.choice.credit .choice-title{color:#b2b2b7}.choice.credit .choice-desc{color:#737379}.choice.credit .rec{background:rgba(48,209,88,.055);border-color:rgba(48,209,88,.09);color:#62946e}.disabled-badge{display:inline-flex;vertical-align:2px;margin-left:6px;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.075);color:#9a9aa0;font-size:9px;font-weight:760;letter-spacing:.055em;text-transform:uppercase}.choice.credit .inactive{color:#5f5f65}'
+          if old_css not in s:
+              raise SystemExit('credit CSS marker not found')
+          s=s.replace(old_css,new_css,1)
+
+          old_markup='<div class="choice credit"><div class="choice-icon">▣</div><div><div class="choice-title">Deposit Funds <span class="rec">Recommended</span></div><div class="choice-desc">Use credit card, Apple Pay, or Google Pay.</div><div class="inactive">Payment flow is not connected in this demo.</div></div></div>'
+          new_markup='<div class="choice credit" aria-disabled="true"><div class="choice-icon">▣</div><div><div class="choice-title">Deposit Funds <span class="rec">Recommended</span><span class="disabled-badge">Disabled</span></div><div class="choice-desc">Use credit card, Apple Pay, or Google Pay.</div><div class="inactive">Payment flow is currently unavailable.</div></div></div>'
+          if old_markup not in s:
+              raise SystemExit('credit card markup not found')
+          s=s.replace(old_markup,new_markup,1)
+
+          p.write_text(s)
+          PY
+      - name: Commit change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/index.html
+          git commit -m "Darken disabled deposit funds option"
+          git push
