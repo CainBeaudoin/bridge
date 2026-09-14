@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f5f5f7" />
   <title>USDC Deposit</title>
   <style>
-    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#f5f5f7;color:#111114;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}button{font:inherit}button:focus-visible{outline:3px solid rgba(10,132,255,.28);outline-offset:2px}.page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;background:radial-gradient(circle at 50% 18%,rgba(255,255,255,.98) 0,rgba(255,255,255,0) 38%),#f5f5f7}.panel{width:min(100%,520px);position:relative;overflow:hidden;padding:30px;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:rgba(255,255,255,.84);box-shadow:0 26px 70px rgba(0,0,0,.08),inset 0 0 0 1px rgba(17,17,20,.035);backdrop-filter:blur(24px) saturate(140%)}.panel:before{content:"";position:absolute;width:220px;height:220px;top:-150px;right:-90px;border-radius:999px;background:rgba(10,132,255,.08);filter:blur(6px)}.brand{width:34px;height:34px;display:grid;place-items:center;margin-bottom:56px;border-radius:11px;background:#111114}.brand span{width:13px;height:13px;border:3px solid #fff;border-top-color:transparent;border-radius:50%;transform:rotate(42deg)}.balance-block{position:relative;z-index:1}.asset{display:flex;align-items:center;gap:9px;color:#3e3e43;font-size:15px;font-weight:650}.usdc,.token{display:grid;place-items:center;border-radius:50%;background:#2775ca;color:#fff;font-weight:760}.usdc{width:26px;height:26px;font-size:14px}.amount{margin-top:14px;font-size:clamp(42px,8vw,58px);line-height:.98;letter-spacing:-.055em;font-weight:680}.amount:before{content:"$";margin-right:2px;color:#79797f;font-size:.64em;font-weight:560;vertical-align:12%}.caption{margin-top:9px;color:#74747a;font-size:14px}.deposit{width:100%;height:54px;margin-top:36px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:17px;background:#111114;color:#fff;font-size:16px;font-weight:650;cursor:pointer;transition:.16s}.deposit:hover{opacity:.92}.deposit:active{transform:scale(.985)}.plus{font-size:22px;font-weight:390;line-height:1}.note{margin:18px 0 0;color:#8a8a90;font-size:13px;text-align:center}.backdrop{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:20px;background:rgba(18,18,22,.23);backdrop-filter:blur(13px)}.backdrop.open{display:grid}.modal{position:relative;width:min(100%,570px);max-height:min(800px,calc(100vh - 40px));overflow-y:auto;padding:32px;border:1px solid rgba(255,255,255,.9);border-radius:30px;background:rgba(251,251,252,.97);box-shadow:0 34px 110px rgba(0,0,0,.2),inset 0 0 0 1px rgba(17,17,20,.045);animation:pop .2s ease-out}.close{position:absolute;top:18px;right:18px;width:34px;height:34px;display:grid;place-items:center;padding:0 0 2px;border:0;border-radius:50%;background:#ececee;color:#5f5f64;font-size:24px;font-weight:300;cursor:pointer}.heading{text-align:center}.token{width:48px;height:48px;margin:4px auto 18px;font-size:23px}.heading h1,.address-view h1{margin:0;font-size:28px;line-height:1.1;letter-spacing:-.035em;font-weight:710}.heading p,.intro{margin:9px 0 0;color:#74747a;font-size:15px;line-height:1.45}.pill{display:inline-flex;margin-top:14px;padding:6px 9px;border-radius:999px;background:rgba(39,117,202,.09);color:#2775ca;font-size:11px;font-weight:760;letter-spacing:.08em;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:28px}.network{min-height:108px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px 8px;border:1px solid rgba(17,17,20,.08);border-radius:20px;background:rgba(255,255,255,.82);color:#111114;cursor:pointer;transition:.15s}.network:hover{transform:translateY(-2px);border-color:rgba(17,17,20,.14);background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.055)}.network.active{background:#f0f0f2}.icon,.selected-icon{display:grid;place-items:center;border-radius:50%;color:#fff;font-weight:760;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}.icon{width:38px;height:38px;font-size:14px}.more-icon{background:#ececee!important;color:#3f3f44;letter-spacing:1px;font-size:13px}.name{max-width:118px;color:#3b3b40;font-size:12px;line-height:1.25;font-weight:620;text-align:center}.more{display:none;margin-top:22px;padding-top:20px;border-top:1px solid rgba(17,17,20,.08)}.more.open{display:block}.more-label{color:#8a8a90;font-size:12px;font-weight:650}.more .grid{margin-top:10px}.more .network{min-height:96px}.foot{margin-top:24px;padding-top:19px;border-top:1px solid rgba(17,17,20,.08);color:#8b8b91;font-size:12px;line-height:1.5;text-align:center}.address-view{display:none;text-align:center}.back{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:2px;border:0;background:transparent;color:#5e5e64;font-size:13px;font-weight:600;cursor:pointer}.back span{font-size:23px;font-weight:300}.selected-icon{width:56px;height:56px;margin:14px auto 18px;font-size:18px}.card{margin-top:26px;padding:18px;border:1px solid rgba(17,17,20,.08);border-radius:21px;background:#fff;text-align:left}.label-row{display:flex;align-items:center;justify-content:space-between;color:#8b8b91;font-size:12px;font-weight:620}.demo{padding:4px 7px;border-radius:999px;background:#fff1d8;color:#a46800;font-size:10px;font-weight:760;letter-spacing:.04em;text-transform:uppercase}.address{min-height:56px;margin-top:12px;padding:13px;display:flex;align-items:center;border-radius:13px;background:#f5f5f7;color:#3e3e43;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45;overflow-wrap:anywhere}.copy{width:100%;height:45px;margin-top:12px;border:0;border-radius:13px;background:#111114;color:#fff;font-size:14px;font-weight:650;cursor:pointer}.warning{margin-top:12px;display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border-radius:16px;background:#fff7e8;color:#865800;text-align:left}.warning-dot{width:20px;height:20px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:#f2a900;color:#fff;font-size:12px;font-weight:800}.warning p{margin:0;font-size:12px;line-height:1.45}.details{margin-top:20px;overflow:hidden;border:1px solid rgba(17,17,20,.08);border-radius:18px;background:rgba(255,255,255,.72);text-align:left}.details div{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 15px;border-bottom:1px solid rgba(17,17,20,.08)}.details div:last-child{border-bottom:0}.details span{color:#8b8b91;font-size:12px}.details strong{color:#3d3d42;font-size:12px;font-weight:650;text-align:right}.waiting{margin-top:18px;display:flex;align-items:center;justify-content:center;gap:8px;color:#76767c;font-size:12px;font-weight:560}.pulse{width:7px;height:7px;border-radius:50%;background:#00b84a;animation:pulse 1.7s infinite}@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,184,74,.35)}70%{box-shadow:0 0 0 8px rgba(0,184,74,0)}100%{box-shadow:0 0 0 0 rgba(0,184,74,0)}}@media(max-width:560px){.panel{padding:24px;border-radius:24px}.brand{margin-bottom:44px}.modal{padding:28px 20px 24px;border-radius:26px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.network{min-height:96px}.heading h1,.address-view h1{font-size:25px}}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#f5f5f7;color:#111114;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input{font:inherit}button:focus-visible,input:focus-visible{outline:3px solid rgba(10,132,255,.22);outline-offset:2px}.page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;background:radial-gradient(circle at 50% 18%,rgba(255,255,255,.98) 0,rgba(255,255,255,0) 38%),#f5f5f7}.panel{width:min(100%,520px);position:relative;overflow:hidden;padding:30px;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:rgba(255,255,255,.84);box-shadow:0 26px 70px rgba(0,0,0,.08),inset 0 0 0 1px rgba(17,17,20,.035);backdrop-filter:blur(24px) saturate(140%)}.panel:before{content:"";position:absolute;width:220px;height:220px;top:-150px;right:-90px;border-radius:999px;background:rgba(10,132,255,.08);filter:blur(6px)}.brand{width:34px;height:34px;display:grid;place-items:center;margin-bottom:56px;border-radius:11px;background:#111114}.brand span{width:13px;height:13px;border:3px solid #fff;border-top-color:transparent;border-radius:50%;transform:rotate(42deg)}.balance-block{position:relative;z-index:1}.asset{display:flex;align-items:center;gap:9px;color:#3e3e43;font-size:15px;font-weight:650}.asset img,.token-logo{display:block;border-radius:50%}.asset img{width:26px;height:26px}.amount{margin-top:14px;font-size:clamp(42px,8vw,58px);line-height:.98;letter-spacing:-.055em;font-weight:680}.amount:before{content:"$";margin-right:2px;color:#79797f;font-size:.64em;font-weight:560;vertical-align:12%}.caption{margin-top:9px;color:#74747a;font-size:14px}.deposit{width:100%;height:54px;margin-top:36px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:17px;background:#111114;color:#fff;font-size:16px;font-weight:650;cursor:pointer;transition:.16s}.deposit:hover{opacity:.92}.deposit:active{transform:scale(.985)}.plus{font-size:22px;font-weight:390;line-height:1}.note{margin:18px 0 0;color:#8a8a90;font-size:13px;text-align:center}.backdrop{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:20px;background:rgba(18,18,22,.23);backdrop-filter:blur(13px)}.backdrop.open{display:grid}.modal{position:relative;width:min(100%,610px);max-height:min(860px,calc(100vh - 40px));overflow-y:auto;padding:32px;border:1px solid rgba(255,255,255,.9);border-radius:30px;background:rgba(251,251,252,.98);box-shadow:0 34px 110px rgba(0,0,0,.2),inset 0 0 0 1px rgba(17,17,20,.045);animation:pop .2s ease-out}.close{position:absolute;top:18px;right:18px;width:34px;height:34px;display:grid;place-items:center;padding:0 0 2px;border:0;border-radius:50%;background:#ececee;color:#5f5f64;font-size:24px;font-weight:300;cursor:pointer}.heading{text-align:center}.token-logo{width:48px;height:48px;margin:4px auto 18px}.heading h1,.address-view h1{margin:0;font-size:28px;line-height:1.1;letter-spacing:-.035em;font-weight:710}.heading p,.intro{margin:9px 0 0;color:#74747a;font-size:15px;line-height:1.45}.pill{display:inline-flex;margin-top:14px;padding:6px 9px;border-radius:999px;background:rgba(39,117,202,.09);color:#2775ca;font-size:11px;font-weight:760;letter-spacing:.08em;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:28px}.network{min-height:112px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:13px 8px;border:1px solid rgba(17,17,20,.08);border-radius:20px;background:rgba(255,255,255,.82);color:#111114;cursor:pointer;transition:.15s}.network:hover{transform:translateY(-2px);border-color:rgba(17,17,20,.14);background:#fff;box-shadow:0 10px 24px rgba(0,0,0,.055)}.network.active{background:#f0f0f2}.chain-icon,.selected-icon{position:relative;display:grid;place-items:center;overflow:hidden;background:#f0f0f2;box-shadow:inset 0 0 0 1px rgba(17,17,20,.05)}.chain-icon{width:42px;height:42px;border-radius:13px}.selected-icon{width:60px;height:60px;margin:14px auto 18px;border-radius:18px}.chain-icon img,.selected-icon img{width:100%;height:100%;display:block;object-fit:cover}.fallback{display:none;width:100%;height:100%;place-items:center;background:#171719;color:#fff;font-size:15px;font-weight:760}.more-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#ececee;color:#3f3f44;letter-spacing:2px;font-size:14px}.name{max-width:138px;color:#303035;font-size:12px;line-height:1.2;font-weight:650;text-align:center}.chain-id{color:#9a9aa0;font-size:10px;line-height:1}.more{display:none;margin-top:22px;padding-top:20px;border-top:1px solid rgba(17,17,20,.08)}.more.open{display:block}.more-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.more-label{color:#78787e;font-size:12px;font-weight:650}.count{color:#9a9aa0;font-size:11px}.search{width:100%;height:44px;margin-top:12px;padding:0 14px;border:1px solid rgba(17,17,20,.08);border-radius:14px;background:#fff;color:#111114;font-size:14px}.search::placeholder{color:#9a9aa0}.more-scroll{max-height:330px;overflow:auto;margin:10px -4px 0;padding:0 4px 4px;overscroll-behavior:contain}.more .grid{margin-top:0}.more .network{min-height:101px}.empty{display:none;padding:34px 0;color:#8b8b91;font-size:13px;text-align:center}.foot{margin-top:24px;padding-top:19px;border-top:1px solid rgba(17,17,20,.08);color:#8b8b91;font-size:12px;line-height:1.5;text-align:center}.source-note{margin-top:7px;color:#aaaab0;font-size:10px}.address-view{display:none;text-align:center}.back{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:2px;border:0;background:transparent;color:#5e5e64;font-size:13px;font-weight:600;cursor:pointer}.back span{font-size:23px;font-weight:300}.card{margin-top:26px;padding:18px;border:1px solid rgba(17,17,20,.08);border-radius:21px;background:#fff;text-align:left}.label-row{display:flex;align-items:center;justify-content:space-between;color:#8b8b91;font-size:12px;font-weight:620}.demo{padding:4px 7px;border-radius:999px;background:#fff1d8;color:#a46800;font-size:10px;font-weight:760;letter-spacing:.04em;text-transform:uppercase}.address{min-height:56px;margin-top:12px;padding:13px;display:flex;align-items:center;border-radius:13px;background:#f5f5f7;color:#3e3e43;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;line-height:1.45;overflow-wrap:anywhere}.copy{width:100%;height:45px;margin-top:12px;border:0;border-radius:13px;background:#111114;color:#fff;font-size:14px;font-weight:650;cursor:pointer}.warning{margin-top:12px;display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border-radius:16px;background:#fff7e8;color:#865800;text-align:left}.warning-dot{width:20px;height:20px;flex:0 0 auto;display:grid;place-items:center;border-radius:50%;background:#f2a900;color:#fff;font-size:12px;font-weight:800}.warning p{margin:0;font-size:12px;line-height:1.45}.details{margin-top:20px;overflow:hidden;border:1px solid rgba(17,17,20,.08);border-radius:18px;background:rgba(255,255,255,.72);text-align:left}.details div{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 15px;border-bottom:1px solid rgba(17,17,20,.08)}.details div:last-child{border-bottom:0}.details span{color:#8b8b91;font-size:12px}.details strong{color:#3d3d42;font-size:12px;font-weight:650;text-align:right}.waiting{margin-top:18px;display:flex;align-items:center;justify-content:center;gap:8px;color:#76767c;font-size:12px;font-weight:560}.pulse{width:7px;height:7px;border-radius:50%;background:#00b84a;animation:pulse 1.7s infinite}@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,184,74,.35)}70%{box-shadow:0 0 0 8px rgba(0,184,74,0)}100%{box-shadow:0 0 0 0 rgba(0,184,74,0)}}@media(max-width:560px){.panel{padding:24px;border-radius:24px}.brand{margin-bottom:44px}.modal{padding:28px 20px 24px;border-radius:26px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.network{min-height:100px}.heading h1,.address-view h1{font-size:25px}}
   </style>
 </head>
 <body>
@@ -14,7 +14,7 @@
     <section class="panel" aria-label="USDC account">
       <div class="brand" aria-hidden="true"><span></span></div>
       <div class="balance-block">
-        <div class="asset"><div class="usdc">$</div><span>USDC</span></div>
+        <div class="asset"><img src="https://assets.relay.link/icons/currencies/usdc.png" alt="USDC" /><span>USDC</span></div>
         <div class="amount">12,480.38</div>
         <div class="caption">Available balance</div>
       </div>
@@ -29,22 +29,23 @@
 
       <div id="networkView">
         <div class="heading">
-          <div class="token">$</div>
+          <img class="token-logo" src="https://assets.relay.link/icons/currencies/usdc.png" alt="USDC" />
           <h1>Deposit USDC</h1>
           <p>Select the network you are sending from.</p>
           <span class="pill">USDC only</span>
         </div>
         <div class="grid" id="primaryGrid"></div>
         <div class="more" id="moreWrap">
-          <div class="more-label">More networks</div>
-          <div class="grid" id="moreGrid"></div>
+          <div class="more-head"><div class="more-label">More networks</div><div class="count" id="networkCount"></div></div>
+          <input class="search" id="networkSearch" type="search" autocomplete="off" placeholder="Search networks" aria-label="Search networks" />
+          <div class="more-scroll"><div class="grid" id="moreGrid"></div><div class="empty" id="emptyState">No networks found.</div></div>
         </div>
-        <div class="foot">Send only USDC using the network you select. Other assets are not supported.</div>
+        <div class="foot">Demo selector only. Validate USDC availability and deposit routing with your backend before accepting funds.<div class="source-note">Network artwork and chain IDs follow Relay's current chain metadata.</div></div>
       </div>
 
       <div class="address-view" id="addressView">
         <button class="back" id="backBtn"><span>‹</span>Networks</button>
-        <div class="selected-icon" id="selectedIcon"></div>
+        <div class="selected-icon"><img id="selectedImg" alt="" /><span class="fallback" id="selectedFallback"></span></div>
         <h1 id="addressTitle"></h1>
         <p class="intro">Send USDC to the address below.</p>
         <div class="card">
@@ -56,6 +57,7 @@
         <div class="details">
           <div><span>Asset</span><strong>USDC</strong></div>
           <div><span>Network</span><strong id="detailNetwork"></strong></div>
+          <div><span>Chain ID</span><strong id="detailChain"></strong></div>
           <div><span>Destination</span><strong>Your USDC balance</strong></div>
         </div>
         <div class="waiting"><span class="pulse"></span>Waiting for deposit</div>
@@ -64,68 +66,113 @@
   </div>
 
   <script>
+    const relayLogo=id=>`https://assets.relay.link/icons/square/${id}/light.png`;
     const networks=[
-      {id:'solana',name:'Solana',short:'S',tone:'#111111',address:'DEMO_SOLANA_USDC_ADDRESS_DO_NOT_SEND',primary:true},
-      {id:'bsc',name:'BNB Smart Chain',short:'B',tone:'#f3ba2f',address:'0xDEMO_BSC_USDC_ADDRESS_DO_NOT_SEND',primary:true},
-      {id:'ethereum',name:'Ethereum',short:'E',tone:'#627eea',address:'0xDEMO_ETH_USDC_ADDRESS_DO_NOT_SEND',primary:true},
-      {id:'robinhood',name:'Robinhood Chain',short:'R',tone:'#00c805',address:'0xDEMO_RH_USDC_ADDRESS_DO_NOT_SEND',primary:true},
-      {id:'base',name:'Base',short:'B',tone:'#0052ff',address:'0xDEMO_BASE_USDC_ADDRESS_DO_NOT_SEND',primary:true},
-      {id:'arbitrum',name:'Arbitrum',short:'A',tone:'#28a0f0',address:'0xDEMO_ARB_USDC_ADDRESS_DO_NOT_SEND'},
-      {id:'optimism',name:'Optimism',short:'O',tone:'#ff0420',address:'0xDEMO_OP_USDC_ADDRESS_DO_NOT_SEND'},
-      {id:'polygon',name:'Polygon',short:'P',tone:'#8247e5',address:'0xDEMO_POLYGON_USDC_ADDRESS_DO_NOT_SEND'},
-      {id:'avalanche',name:'Avalanche',short:'A',tone:'#e84142',address:'0xDEMO_AVAX_USDC_ADDRESS_DO_NOT_SEND'},
-      {id:'megaeth',name:'MegaETH',short:'M',tone:'#151515',address:'0xDEMO_MEGAETH_USDC_ADDRESS_DO_NOT_SEND'},
-      {id:'linea',name:'Linea',short:'L',tone:'#121212',address:'0xDEMO_LINEA_USDC_ADDRESS_DO_NOT_SEND'},
-      {id:'scroll',name:'Scroll',short:'S',tone:'#d8b177',address:'0xDEMO_SCROLL_USDC_ADDRESS_DO_NOT_SEND'},
-      {id:'sui',name:'Sui',short:'S',tone:'#6fbcf0',address:'DEMO_SUI_USDC_ADDRESS_DO_NOT_SEND'}
-    ];
+      {slug:'solana',name:'Solana',chainId:792703809,primary:true},
+      {slug:'bnb',name:'BNB Smart Chain',chainId:56,primary:true},
+      {slug:'ethereum',name:'Ethereum',chainId:1,primary:true},
+      {slug:'robinhood',name:'Robinhood Chain',chainId:4663,primary:true},
+      {slug:'base',name:'Base',chainId:8453,primary:true},
+      {slug:'abstract',name:'Abstract',chainId:2741},
+      {slug:'animechain',name:'Animechain',chainId:69000},
+      {slug:'arbitrum',name:'Arbitrum',chainId:42161},
+      {slug:'avalanche',name:'Avalanche',chainId:43114},
+      {slug:'b3',name:'B3',chainId:8333},
+      {slug:'berachain',name:'Berachain',chainId:80094},
+      {slug:'celo',name:'Celo',chainId:42220},
+      {slug:'corn',name:'Corn',chainId:21000000},
+      {slug:'cronos',name:'Cronos',chainId:25},
+      {slug:'doma',name:'Doma',chainId:97477},
+      {slug:'flow',name:'Flow EVM',chainId:747},
+      {slug:'gensyn',name:'Gensyn',chainId:685689},
+      {slug:'gnosis',name:'Gnosis',chainId:100},
+      {slug:'hyperevm',name:'HyperEVM',chainId:999},
+      {slug:'hyperliquid',name:'Hyperliquid',chainId:1337},
+      {slug:'ink',name:'Ink',chainId:57073},
+      {slug:'katana',name:'Katana',chainId:747474},
+      {slug:'lighter',name:'Lighter',chainId:3586256},
+      {slug:'linea',name:'Linea',chainId:59144},
+      {slug:'mantle',name:'Mantle',chainId:5000},
+      {slug:'megaeth',name:'MegaETH',chainId:4326},
+      {slug:'monad',name:'Monad',chainId:143},
+      {slug:'mythos',name:'Mythos',chainId:42018},
+      {slug:'optimism',name:'Optimism',chainId:10},
+      {slug:'perennial',name:'Perennial',chainId:1424},
+      {slug:'plume',name:'Plume',chainId:98866},
+      {slug:'polygon',name:'Polygon',chainId:137},
+      {slug:'ronin',name:'Ronin',chainId:2020},
+      {slug:'sei',name:'Sei',chainId:1329},
+      {slug:'soneium',name:'Soneium',chainId:1868},
+      {slug:'sonic',name:'Sonic',chainId:146},
+      {slug:'story',name:'Story',chainId:1514},
+      {slug:'tempo',name:'Tempo',chainId:4217},
+      {slug:'unichain',name:'Unichain',chainId:130},
+      {slug:'world',name:'World Chain',chainId:480},
+      {slug:'zero',name:'ZERO',chainId:543210}
+    ].map(n=>({...n,logo:relayLogo(n.chainId),address:`DEMO_${n.slug.toUpperCase()}_USDC_ADDRESS_DO_NOT_SEND`}));
 
     const backdrop=document.getElementById('backdrop');
     const networkView=document.getElementById('networkView');
     const addressView=document.getElementById('addressView');
     const moreWrap=document.getElementById('moreWrap');
+    const moreGrid=document.getElementById('moreGrid');
+    const search=document.getElementById('networkSearch');
+    const empty=document.getElementById('emptyState');
     const copyBtn=document.getElementById('copyBtn');
     let selected=null;
 
+    function iconNode(n,size='normal'){
+      const wrap=document.createElement('span');
+      wrap.className=size==='selected'?'selected-icon':'chain-icon';
+      const img=document.createElement('img');
+      img.src=n.logo;img.alt=n.name+' logo';img.loading='lazy';img.referrerPolicy='no-referrer';
+      const fallback=document.createElement('span');fallback.className='fallback';fallback.textContent=n.name.charAt(0);
+      img.addEventListener('error',()=>{img.style.display='none';fallback.style.display='grid'});
+      wrap.append(img,fallback);return wrap;
+    }
+
     function networkButton(n){
-      const b=document.createElement('button');
-      b.className='network';
-      b.innerHTML='<span class="icon" style="background:'+n.tone+'">'+n.short+'</span><span class="name">'+n.name+'</span>';
-      b.addEventListener('click',()=>selectNetwork(n));
-      return b;
+      const b=document.createElement('button');b.className='network';b.dataset.name=n.name.toLowerCase();b.dataset.chain=String(n.chainId);
+      b.appendChild(iconNode(n));
+      const name=document.createElement('span');name.className='name';name.textContent=n.name;
+      const id=document.createElement('span');id.className='chain-id';id.textContent='#'+n.chainId;
+      b.append(name,id);b.addEventListener('click',()=>selectNetwork(n));return b;
     }
 
     networks.filter(n=>n.primary).forEach(n=>document.getElementById('primaryGrid').appendChild(networkButton(n)));
-    const moreBtn=document.createElement('button');
-    moreBtn.className='network';
-    moreBtn.innerHTML='<span class="icon more-icon">•••</span><span class="name">More</span>';
-    moreBtn.addEventListener('click',()=>{moreWrap.classList.toggle('open');moreBtn.classList.toggle('active')});
+    const moreBtn=document.createElement('button');moreBtn.className='network';moreBtn.innerHTML='<span class="more-icon">•••</span><span class="name">More</span><span class="chain-id">Networks</span>';
+    moreBtn.addEventListener('click',()=>{const open=moreWrap.classList.toggle('open');moreBtn.classList.toggle('active',open);if(open)setTimeout(()=>search.focus(),40)});
     document.getElementById('primaryGrid').appendChild(moreBtn);
-    networks.filter(n=>!n.primary).forEach(n=>document.getElementById('moreGrid').appendChild(networkButton(n)));
 
-    function openModal(){backdrop.classList.add('open');networkView.style.display='block';addressView.style.display='none';moreWrap.classList.remove('open');moreBtn.classList.remove('active');selected=null}
-    function closeModal(){backdrop.classList.remove('open')}
+    const moreNetworks=networks.filter(n=>!n.primary).sort((a,b)=>a.name.localeCompare(b.name));
+    document.getElementById('networkCount').textContent=moreNetworks.length+' networks';
+    function renderMore(query=''){
+      const q=query.trim().toLowerCase();moreGrid.innerHTML='';
+      const filtered=moreNetworks.filter(n=>!q||n.name.toLowerCase().includes(q)||String(n.chainId).includes(q));
+      filtered.forEach(n=>moreGrid.appendChild(networkButton(n)));empty.style.display=filtered.length?'none':'block';
+    }
+    renderMore();search.addEventListener('input',e=>renderMore(e.target.value));
+
+    function openModal(){backdrop.classList.add('open');document.body.style.overflow='hidden'}
+    function closeModal(){backdrop.classList.remove('open');document.body.style.overflow='';showNetworks();moreWrap.classList.remove('open');moreBtn.classList.remove('active');search.value='';renderMore()}
+    function showNetworks(){selected=null;networkView.style.display='block';addressView.style.display='none';copyBtn.textContent='Copy address'}
     function selectNetwork(n){
-      selected=n;
-      networkView.style.display='none';addressView.style.display='block';
-      const icon=document.getElementById('selectedIcon');icon.textContent=n.short;icon.style.background=n.tone;
+      selected=n;networkView.style.display='none';addressView.style.display='block';
+      const img=document.getElementById('selectedImg'),fallback=document.getElementById('selectedFallback');
+      img.style.display='block';fallback.style.display='none';img.src=n.logo;img.alt=n.name+' logo';fallback.textContent=n.name.charAt(0);
+      img.onerror=()=>{img.style.display='none';fallback.style.display='grid'};
       document.getElementById('addressTitle').textContent='Deposit on '+n.name;
       document.getElementById('addressValue').textContent=n.address;
       document.getElementById('detailNetwork').textContent=n.name;
-      copyBtn.textContent='Copy address';
-    }
-    function backToNetworks(){addressView.style.display='none';networkView.style.display='block';selected=null}
-    async function copyAddress(){
-      if(!selected)return;
-      try{await navigator.clipboard.writeText(selected.address);copyBtn.textContent='Copied';setTimeout(()=>copyBtn.textContent='Copy address',1600)}catch(e){copyBtn.textContent='Copy failed'}
+      document.getElementById('detailChain').textContent=n.chainId;
     }
 
     document.getElementById('depositBtn').addEventListener('click',openModal);
     document.getElementById('closeBtn').addEventListener('click',closeModal);
-    document.getElementById('backBtn').addEventListener('click',backToNetworks);
-    copyBtn.addEventListener('click',copyAddress);
+    document.getElementById('backBtn').addEventListener('click',showNetworks);
     backdrop.addEventListener('mousedown',e=>{if(e.target===backdrop)closeModal()});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop.classList.contains('open'))closeModal()});
+    copyBtn.addEventListener('click',async()=>{if(!selected)return;try{await navigator.clipboard.writeText(selected.address);copyBtn.textContent='Copied';setTimeout(()=>copyBtn.textContent='Copy address',1400)}catch{copyBtn.textContent='Copy failed'}});
   </script>
 </body>
 </html>
