@@ -1,0 +1,73 @@
+name: Move minimum and remove demo labels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/move-minimum-remove-demo.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update deposit layout
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('public/index.html')
+          s=p.read_text()
+
+          # Remove yellow/demo styling and add neutral minimum styling near the action.
+          s=s.replace(';--yellow:#ffd60a','')
+          s=s.replace('.demo{padding:3px 6px;border-radius:999px;background:rgba(255,214,10,.09);color:#f0c84b;border:1px solid rgba(255,214,10,.13);font-size:8px;font-weight:750;letter-spacing:.045em;text-transform:uppercase}','')
+          s=s.replace('.warn{margin-top:11px;padding:10px 11px;border:1px solid rgba(255,214,10,.1);border-radius:12px;background:rgba(255,214,10,.045);color:#aa9150;font-size:9px;line-height:1.45}.warn strong{color:#c8a94d}','')
+          s=s.replace('#addressView .warn{margin-top:7px;padding:7px 9px}','')
+
+          marker='.copy:disabled{opacity:.65;cursor:default;filter:saturate(.65)}'
+          minimum_css='.minimum{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px;padding:9px 10px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(255,255,255,.025);color:var(--muted-2);font-size:9px;line-height:1.35}.minimum strong{color:#d7d7dc;font-size:10px;font-weight:700;white-space:nowrap}'
+          if minimum_css not in s:
+              s=s.replace(marker,marker+minimum_css,1)
+
+          old='<div class="address-card"><div class="label"><span>Deposit address</span><span class="demo">Demo</span></div><div class="address" id="addressValue"></div><button class="copy" id="copyBtn">Copy address</button></div><div class="status"'
+          new='<div class="address-card"><div class="label"><span>Deposit address</span></div><div class="address" id="addressValue"></div><button class="copy" id="copyBtn">Copy address</button><div class="minimum"><strong>$5 minimum</strong><span>Required for bridge and swap routing.</span></div></div><div class="status"'
+          if old not in s:
+              raise SystemExit('Deposit address block not found')
+          s=s.replace(old,new,1)
+
+          s=s.replace('<div class="minimum"><strong>$5 minimum</strong><span>Required for bridge and swap routing.</span></div><div class="warn"><strong>Demo only.</strong> Placeholder addresses are intentionally invalid. Do not send real funds.</div>','',1)
+          s=s.replace('Choose the exact network and asset you are sending. The destination shown next is a demo address.','Choose the exact network and asset you are sending.')
+          s=s.replace('Waiting for demo deposit…','Waiting for deposit…')
+          s=s.replace('DEMO_${slug.toUpperCase().replaceAll(\'-\',\'_\')}_USDC_ADDRESS_DO_NOT_SEND','PLACEHOLDER_${slug.toUpperCase().replaceAll(\'-\',\'_\')}_USDC_ADDRESS_DO_NOT_SEND')
+          s=s.replace("return 'DEMO_'+selected.slug.toUpperCase().replaceAll('-','_')+'_WALLET_ADDRESS_DO_NOT_SEND'","return 'PLACEHOLDER_'+selected.slug.toUpperCase().replaceAll('-','_')+'_WALLET_ADDRESS_DO_NOT_SEND'")
+
+          if 'class="demo"' in s or 'class="warn"' in s or 'Demo only.' in s:
+              raise SystemExit('Visible demo labels remain')
+          if s.count('<div class="minimum"><strong>$5 minimum</strong>') != 1:
+              raise SystemExit('Minimum notice not positioned exactly once')
+
+          p.write_text(s)
+          PY
+      - name: Validate JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('public/index.html').read_text()
+          m=re.search(r'<script>(.*)</script>',s,re.S)
+          if not m:
+              raise SystemExit('script not found')
+          Path('/tmp/app.js').write_text(m.group(1))
+          PY
+          node --check /tmp/app.js
+      - name: Commit update and remove workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/move-minimum-remove-demo.yml
+          git add public/index.html
+          git commit -m "Move deposit minimum and remove demo labels"
+          git push
