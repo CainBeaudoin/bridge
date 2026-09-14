@@ -1,0 +1,87 @@
+name: Add native deposit assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/native-deposit-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add USDC and native token deposit selection
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('public/index.html')
+          s=p.read_text()
+
+          s=s.replace('Bridge funds, or send USDC from any supported network to your balance.','Send USDC or a network’s native token and route it to your balance.')
+          s=s.replace('Select the network you are sending USDC from.','Select the network you are sending from.')
+          s=s.replace('>USDC only</div>','>USDC + native</div>')
+          s=s.replace('Choose the exact network you are sending from. The destination shown next is a demo address.','Choose the exact network and asset you are sending. The destination shown next is a demo address.')
+          s=s.replace('<h2>Deposit USDC</h2><p>Scan the QR code or copy the deposit address.</p>','<h2 id="depositTitle">Deposit funds</h2><p>Choose USDC or the native token, then scan or copy the address.</p>')
+
+          old='<div class="address-card"><div class="label"><span>Deposit address</span><span class="demo">Demo</span></div>'
+          new='<div class="asset-picker" id="assetPicker"><button class="asset-option active" id="usdcAsset" type="button"><span class="asset-symbol">USDC</span><span class="asset-kind">Stablecoin</span></button><button class="asset-option" id="nativeAsset" type="button"><span class="asset-symbol" id="nativeSymbol">ETH</span><span class="asset-kind">Native token</span></button></div><div class="address-card"><div class="label"><span>Deposit address</span><span class="demo">Demo</span></div>'
+          if old not in s: raise SystemExit('address card marker missing')
+          s=s.replace(old,new,1)
+
+          s=s.replace('<div class="row"><span>Asset</span><strong>USDC</strong></div><div class="row"><span>Destination</span><strong>General USDC balance</strong></div>','<div class="row"><span>Asset</span><strong id="assetName">USDC</strong></div><div class="row"><span>Destination</span><strong id="destinationText">General USDC balance</strong></div>',1)
+          s=s.replace('<div class="warn"><strong>Demo only.</strong> Placeholder addresses are intentionally invalid. Do not send real funds.</div>','<div class="minimum"><strong>$5 minimum</strong><span>Required for bridge and swap routing.</span></div><div class="warn"><strong>Demo only.</strong> Placeholder addresses are intentionally invalid. Do not send real funds.</div>',1)
+
+          css_marker='.address-card{padding:15px;'
+          css_insert='.asset-picker{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 10px;padding:4px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}.asset-option{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0;padding:9px 10px;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer;transition:background .15s ease,color .15s ease,box-shadow .15s ease}.asset-option:hover{background:rgba(255,255,255,.045);color:#fff}.asset-option.active{background:rgba(255,255,255,.095);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 4px 14px rgba(0,0,0,.12)}.asset-symbol{font-size:11px;font-weight:750;letter-spacing:-.01em}.asset-kind{font-size:8.5px;color:var(--muted-2)}.asset-option.active .asset-kind{color:#aaaab0}.minimum{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;padding:9px 11px;border:1px solid rgba(48,209,88,.14);border-radius:12px;background:rgba(48,209,88,.055);font-size:9px;line-height:1.35}.minimum strong{color:#9af0b1;font-size:9.5px}.minimum span{color:#79a984;text-align:right}'
+          if css_marker not in s: raise SystemExit('css marker missing')
+          s=s.replace(css_marker,css_insert+css_marker,1)
+
+          mobile_marker='#addressView .address-card{padding:10px}'
+          mobile_insert='#addressView .asset-picker{margin-bottom:6px;padding:3px;gap:4px}#addressView .asset-option{padding:6px 7px;border-radius:8px}#addressView .asset-symbol{font-size:9.5px}#addressView .asset-kind{font-size:7px}#addressView .minimum{margin-top:6px;padding:6px 8px;font-size:7.5px}#addressView .minimum strong{font-size:8px}'
+          if mobile_marker in s and mobile_insert not in s:
+              s=s.replace(mobile_marker,mobile_insert+mobile_marker,1)
+          s=s.replace('#addressView .qr-card{max-width:145px;','#addressView .qr-card{max-width:122px;',1)
+          s=s.replace('#addressView .selected .chain-icon{width:36px;height:36px}','#addressView .selected .chain-icon{width:32px;height:32px}',1)
+          s=s.replace('#addressView .selected h2{font-size:17px}','#addressView .selected h2{font-size:16px}',1)
+          s=s.replace('#addressView .copy{height:36px;margin-top:6px}','#addressView .copy{height:33px;margin-top:5px}',1)
+          s=s.replace('#addressView .row{min-height:32px}','#addressView .row{min-height:28px}',1)
+
+          s=s.replace("const $=id=>document.getElementById(id),overlay=$('overlay'),modal=document.querySelector('.modal'),funding=$('fundingView'),chains=$('chainView'),address=$('addressView'),more=$('morePanel'),moreGrid=$('moreGrid'),search=$('networkSearch'),empty=$('emptyState'),copy=$('copyBtn'),balance=$('fundsBalance'),status=$('depositStatus'),sicon=$('statusIcon'),stitle=$('statusTitle'),ssub=$('statusSub');let selected=null,timer=null;",
+          "const nativeSymbols={solana:'SOL',bnb:'BNB',ethereum:'ETH',robinhood:'ETH',base:'ETH',abstract:'ETH',ancient8:'ETH',animechain:'ETH',apechain:'APE',arbitrum:'ETH','arbitrum-nova':'ETH',avalanche:'AVAX',b3:'ETH',berachain:'BERA',bitcoin:'BTC',blast:'ETH',bob:'ETH',boba:'ETH',celo:'CELO',cronos:'CRO',cyber:'ETH',degen:'DEGEN',flow:'FLOW',gnosis:'xDAI',gunz:'GUN',hemi:'ETH',hyperevm:'HYPE',hyperliquid:'HYPE',ink:'ETH',katana:'ETH',linea:'ETH',lisk:'ETH',manta:'ETH',mantle:'MNT',megaeth:'ETH',metis:'METIS',mode:'ETH',monad:'MON',morph:'ETH',mythos:'MYTH',optimism:'ETH',plasma:'XPL',plume:'PLUME',polygon:'POL',rari:'ETH',ronin:'RON',scroll:'ETH',sei:'SEI',shape:'ETH',somnia:'SOMI',soneium:'ETH',sonic:'S',story:'IP',superposition:'ETH',superseed:'ETH',swellchain:'ETH',syndicate:'ETH',taiko:'ETH',tron:'TRX',unichain:'ETH',world:'ETH',zero:'ETH',zircuit:'ETH',zksync:'ETH',zora:'ETH'};const $=id=>document.getElementById(id),overlay=$('overlay'),modal=document.querySelector('.modal'),funding=$('fundingView'),chains=$('chainView'),address=$('addressView'),more=$('morePanel'),moreGrid=$('moreGrid'),search=$('networkSearch'),empty=$('emptyState'),copy=$('copyBtn'),balance=$('fundsBalance'),status=$('depositStatus'),sicon=$('statusIcon'),stitle=$('statusTitle'),ssub=$('statusSub');let selected=null,selectedAsset='USDC',timer=null;",1)
+
+          old_select="function select(n){selected=n;view(address);$('selectedName').textContent=n.name;$('selectedChain').textContent='Chain ID '+n.chainId;$('addressValue').textContent=n.address;const i=$('selectedLogo'),f=$('selectedFallback');i.style.display='block';f.style.display='none';i.dataset.l='';i.src=n.logo;i.alt=n.name+' logo';f.textContent=n.name[0];i.onerror=()=>{if(!i.dataset.l){i.dataset.l=1;i.src=light(n.chainId)}else{i.style.display='none';f.style.display='grid'}};$('qrImage').src='https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=8&data='+encodeURIComponent(n.address);reset()}"
+          new_select="function nativeFor(n){return nativeSymbols[n.slug]||'Native'}function currentAsset(){return selectedAsset==='USDC'?'USDC':nativeFor(selected)}function currentAddress(){const tag=currentAsset().toUpperCase().replace(/[^A-Z0-9]+/g,'_');return 'DEMO_'+selected.slug.toUpperCase().replaceAll('-','_')+'_'+tag+'_ADDRESS_DO_NOT_SEND'}function refreshAsset(){if(!selected)return;const sym=currentAsset(),addr=currentAddress();$('nativeSymbol').textContent=nativeFor(selected);$('usdcAsset').classList.toggle('active',selectedAsset==='USDC');$('nativeAsset').classList.toggle('active',selectedAsset!=='USDC');$('depositTitle').textContent='Deposit '+sym;$('assetName').textContent=sym;$('destinationText').textContent=selectedAsset==='USDC'?'General USDC balance':'Converted to USDC balance';$('addressValue').textContent=addr;$('qrImage').src='https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=8&data='+encodeURIComponent(addr);reset()}function select(n){selected=n;selectedAsset='USDC';view(address);$('selectedName').textContent=n.name;$('selectedChain').textContent='Chain ID '+n.chainId;const i=$('selectedLogo'),f=$('selectedFallback');i.style.display='block';f.style.display='none';i.dataset.l='';i.src=n.logo;i.alt=n.name+' logo';f.textContent=n.name[0];i.onerror=()=>{if(!i.dataset.l){i.dataset.l=1;i.src=light(n.chainId)}else{i.style.display='none';f.style.display='grid'}};refreshAsset()}"
+          if old_select not in s: raise SystemExit('select block missing')
+          s=s.replace(old_select,new_select,1)
+
+          old_demo="function demo(){reset();copy.disabled=true;copy.textContent='Address copied';status.className='status show loading';sicon.innerHTML='<span class=\"spinner\"></span>';stitle.textContent='Waiting for demo deposit…';ssub.textContent='Simulating a USDC transfer on '+selected.name+'.';timer=setTimeout(()=>{timer=null;status.className='status show success';sicon.textContent='✓';stitle.textContent='$25 USDC deposited';ssub.textContent='Deposit confirmed. Check your balance — it is now $25.00.';balance.textContent='$25.00';$('fundsTrigger').setAttribute('aria-label','Add funds. Current balance twenty five dollars');copy.disabled=false;copy.textContent='Copy address'},5000)}"
+          new_demo="function demo(){reset();const sym=currentAsset();copy.disabled=true;copy.textContent='Address copied';status.className='status show loading';sicon.innerHTML='<span class=\"spinner\"></span>';stitle.textContent='Waiting for demo deposit…';ssub.textContent='Simulating a '+sym+' transfer on '+selected.name+'.';timer=setTimeout(()=>{timer=null;status.className='status show success';sicon.textContent='✓';stitle.textContent=selectedAsset==='USDC'?'$25 USDC deposited':'$25 equivalent deposited';ssub.textContent=selectedAsset==='USDC'?'Deposit confirmed. Check your balance — it is now $25.00.':sym+' received, routed through the swap, and credited to your balance. Balance is now $25.00.';balance.textContent='$25.00';$('fundsTrigger').setAttribute('aria-label','Add funds. Current balance twenty five dollars');copy.disabled=false;copy.textContent='Copy address'},5000)}"
+          if old_demo not in s: raise SystemExit('demo block missing')
+          s=s.replace(old_demo,new_demo,1)
+
+          s=s.replace("$('fundsTrigger').onclick=open;$('closeBtn').onclick=close;","$('fundsTrigger').onclick=open;$('closeBtn').onclick=close;$('usdcAsset').onclick=()=>{selectedAsset='USDC';refreshAsset()};$('nativeAsset').onclick=()=>{selectedAsset='NATIVE';refreshAsset()};",1)
+          s=s.replace("await navigator.clipboard.writeText(selected.address);demo()","await navigator.clipboard.writeText(currentAddress());demo()",1)
+
+          p.write_text(s)
+          PY
+      - name: Validate JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('public/index.html').read_text()
+          m=re.search(r'<script>(.*)</script>',s,re.S)
+          Path('/tmp/app.js').write_text(m.group(1))
+          PY
+          node --check /tmp/app.js
+      - name: Commit change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/index.html
+          git commit -m "Support USDC and native token deposits"
+          git push
