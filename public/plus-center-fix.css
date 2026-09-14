@@ -1,1 +1,0 @@
-.plus{position:relative!important;display:block!important;font-size:0!important;line-height:0!important}.plus::before,.plus::after{content:"";position:absolute;left:50%;top:50%;border-radius:999px;background:#fff;transform:translate(-50%,-50%)}.plus::before{width:22px;height:2.5px}.plus::after{width:2.5px;height:22px}
