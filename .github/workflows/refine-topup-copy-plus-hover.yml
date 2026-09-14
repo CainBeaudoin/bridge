@@ -1,0 +1,64 @@
+name: Refine top-up copy and plus hover
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/refine-topup-copy-plus-hover.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove generic USDC native copy and make plus hover-specific
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('public/index.html')
+          s=p.read_text()
+
+          s=s.replace('Send USDC or a network’s native token and route it to your balance.','Top up from a supported network.')
+          s=s.replace('Send USDC or the native token to this address.','Send a supported asset to this address.')
+
+          s=s.replace('animation:plusBreathe 2.35s ease-in-out infinite;','')
+          s=s.replace('.funds:hover .plus{animation:none;transform:translateY(-1px) scale(1.075);filter:brightness(1.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 12px 34px rgba(48,209,88,.34),0 0 0 5px rgba(48,209,88,.07)}','.plus:hover{transform:translateY(-2px) scale(1.055);filter:brightness(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 11px 30px rgba(48,209,88,.28),0 0 0 4px rgba(48,209,88,.06)}')
+          s=s.replace('.funds:active .plus{animation:none;transform:scale(.94)}','.plus:active{transform:translateY(0) scale(.94)}')
+          s=s.replace('.funds:hover .plus:before{width:25px}.funds:hover .plus:after{height:25px}','.plus:hover:before{width:24px}.plus:hover:after{height:24px}')
+          s=s.replace('@keyframes plusBreathe{0%,100%{transform:scale(1);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 8px 24px rgba(48,209,88,.16)}50%{transform:scale(1.035);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 32px rgba(48,209,88,.32),0 0 0 5px rgba(48,209,88,.055)}}','')
+          s=s.replace('@media(prefers-reduced-motion:reduce){.plus{animation:none}.funds,.plus,.plus:before,.plus:after{transition:none}}','@media(prefers-reduced-motion:reduce){.funds,.plus,.plus:before,.plus:after{transition:none}}')
+          s=s.replace('font-size:0;line-height:0;border-radius:17px;','font-size:0;line-height:0;border-radius:17px;cursor:pointer;')
+
+          if 'USDC + native' in s:
+              raise SystemExit('USDC + native text still present')
+          if 'network’s native token' in s:
+              raise SystemExit('generic native-token copy still present')
+          if '@keyframes plusBreathe' in s:
+              raise SystemExit('idle plus animation still present')
+          if '.plus:hover{' not in s:
+              raise SystemExit('plus hover animation missing')
+
+          p.write_text(s)
+          PY
+      - name: Validate JavaScript
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('public/index.html').read_text()
+          m=re.search(r'<script>(.*)</script>',s,re.S)
+          if not m:
+              raise SystemExit('script not found')
+          Path('/tmp/app.js').write_text(m.group(1))
+          PY
+          node --check /tmp/app.js
+      - name: Commit change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/index.html
+          git commit -m "Refine top-up copy and plus hover"
+          git push
